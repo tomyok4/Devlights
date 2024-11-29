@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Usamos useNavigate en lugar de useHistory
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AuthContext from '../context/AuthContext';
 import { useContext } from 'react';
+import './LoginRegister.css'; // Asegúrate de importar el archivo CSS
 
 const LoginRegister = ({ isLogin }) => {
-  const { login } = useContext(AuthContext); // Accedemos al contexto para usar el método login
+  const { login } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null); // Para manejar posibles errores
-  const navigate = useNavigate(); // Usamos useNavigate para redirigir
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,8 +20,8 @@ const LoginRegister = ({ isLogin }) => {
     axios
       .post(url, data)
       .then((response) => {
-        login(response.data.token); // Guardamos el token en el contexto
-        navigate('/'); // Redirigimos al Dashboard usando navigate
+        login(response.data.token);
+        navigate('/');
       })
       .catch((error) => {
         console.error('Error:', error);
