@@ -1,0 +1,44 @@
+.profileContainer {
+    padding: 20px;
+  }
+  
+  .tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .tabButton {
+    padding: 10px 20px;
+    background-color: #C5A18C;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .tabButton:hover {
+    background-color: #4E342E;
+    color: white;
+  }
+  
+  .activeTab {
+    background-color: #4E342E;
+    color: white;
+  }
+  
+  .tabContent {
+    padding: 20px;
+    border-top: 2px solid #C5A18C;
+  }
+  
+  .infoTab,
+  .ordersTab,
+  .favoritesTab {
+    padding: 10px;
+  }
+  
+  .infoTab p,
+  .ordersTab p,
+  .favoritesTab p {
+    margin-bottom: 10px;
+  }
+  
