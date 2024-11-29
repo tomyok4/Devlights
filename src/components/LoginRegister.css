@@ -1,76 +1,85 @@
+/* Contenedor principal */
 .loginRegisterContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 400px; /* Ancho máximo del formulario */
-    margin: 50px auto; /* Centrado en la página con margen superior */
-    padding: 20px;
-    background-color: #f5e9da; /* Color de fondo suave */
-    border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
-    text-align: center;
-  }
-  
-  .loginRegisterContainer h2 {
-    margin-bottom: 20px;
-    color: #221616; /* Color de texto */
-    font-family: 'Arial', sans-serif;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  
-  input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s;
-  }
-  
-  input:focus {
-    border-color: #007bff; /* Color de borde al enfocar */
-  }
-  
-  button {
-    background-color: #007bff; /* Color de fondo del botón */
-    color: #ffffff; /* Color de texto del botón */
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  button:hover {
-    background-color: #0056b3; /* Color de fondo al pasar el mouse */
-  }
-  
-  .errorMessage {
-    color: #d9534f; /* Color rojo para el mensaje de error */
-    margin-top: 10px;
-    font-size: 0.9rem;
-  }
-  
-  .switchAuth {
-    margin-top: 15px;
-    font-size: 0.9rem;
-  }
-  
-  .switchAuth a {
-    color: #007bff; /* Color de los enlaces */
-    text-decoration: none;
-  }
-  
-  .switchAuth a:hover {
-    text-decoration: underline; /* Subrayado al pasar el mouse */
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f5e9da; /* Color de fondo */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Título */
+.loginRegisterContainer h2 {
+  margin-bottom: 20px;
+  color: #4e342e; /* Color del texto */
+  font-family: 'Arial', sans-serif;
+}
+
+/* Formulario */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Inputs */
+input {
+  width: calc(100% - 20px); /* Resta márgenes y padding */
+  max-width: 360px; /* Máximo ancho para inputs */
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: #4e342e; /* Color del borde al enfocar */
+}
+
+/* Botón */
+button {
+  background-color: #4e342e; /* Color de fondo del botón */
+  color: #ffffff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #3b2a23; /* Color al pasar el mouse */
+}
+
+/* Mensaje de error */
+.errorMessage {
+  color: #d9534f;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+/* Cambio de autenticación */
+.switchAuth {
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+.switchAuth a {
+  color: #4e342e;
+  text-decoration: none;
+}
+
+.switchAuth a:hover {
+  text-decoration: underline;
+}
