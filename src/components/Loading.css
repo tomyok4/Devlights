@@ -1,0 +1,48 @@
+/* Contenedor principal */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5e9da; /* Fondo beige */
+  }
+  
+  /* SVG para centrar la animación */
+  .loading-svg {
+    width: 300px;
+    height: 100px;
+  }
+  
+  /* Barra de carga */
+  .loading-bar {
+    width: 300px;
+    height: 10px;
+    background-color: #c5a18c; /* Fondo de la barra */
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 20px; /* Separación de los libros */
+    position: relative;
+  }
+  
+  /* Progreso animado */
+  .loading-progress {
+    width: 0;
+    height: 100%;
+    background-color: #4f3737; /* Color del progreso */
+    animation: progress-animation 2s infinite;
+    border-radius: 5px;
+  }
+  
+  /* Animación de la barra */
+  @keyframes progress-animation {
+    0% {
+      width: 0;
+    }
+    50% {
+      width: 75%;
+    }
+    100% {
+      width: 0;
+    }
+  }

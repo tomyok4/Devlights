@@ -1,13 +1,16 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import { useCart } from '../context/CartContext'; // Importamos useCart para obtener el carrito
+import { FaShoppingCart } from 'react-icons/fa'; // Importamos el ícono del carrito
 import axios from 'axios'; // Para hacer la solicitud HTTP
+import './Navbar.css'; // Importamos el archivo CSS
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
-  const { cart } = useCart(); // Accedemos a los productos en el carrito
+  const { cart, removeFromCart } = useCart(); // Cambié `removeItem` a `removeFromCart`
   const [isCartOpen, setIsCartOpen] = useState(false); // Para manejar el estado del carrito desplegable
+  const navigate = useNavigate(); // Para redirigir a otras páginas
 
   // Calcular el total del carrito
   const calculateTotal = () => {
@@ -45,50 +48,56 @@ const Navbar = () => {
     }
   };
 
-  return (
-    <nav style={{ backgroundColor: '#4E342E', padding: '10px' }}>
-      <ul style={{ display: 'flex', justifyContent: 'space-around', listStyle: 'none', color: '#C5A18C' }}>
-        <li>
-          <Link to="/">Inicio</Link>
-        </li>
+  // Función para eliminar un libro del carrito
+  const handleRemoveItem = (itemId) => {
+    removeFromCart(itemId); // Cambié `removeItem` por `removeFromCart`
+  };
 
-        {/* Carrito de compras */}
-        <li style={{ position: 'relative' }}>
+  // Función para cerrar sesión y redirigir al inicio
+  const handleLogout = () => {
+    logout(); // Cerrar sesión
+    navigate('/'); // Redirigir al inicio
+  };
+
+  return (
+    <nav className="navbar">
+      <div className="navbar-left">
+        <Link to="/" className="navbar-link">Inicio</Link>
+
+        {/* Carrito de compras con ícono */}
+        <div className={`cart-container ${isCartOpen ? 'open' : ''}`}>
           <button 
             onClick={() => setIsCartOpen(!isCartOpen)} 
-            style={{ background: 'none', border: 'none', color: '#C5A18C', cursor: 'pointer' }}
+            className="cart-button"
           >
-            Carrito ({cart.length}) - ${calculateTotal().toFixed(2)}
+            <FaShoppingCart className="cart-icon" />
+            ({cart.length}) - ${calculateTotal().toFixed(2)}
           </button>
 
           {/* Desplegar carrito */}
           {isCartOpen && (
-            <div
-              style={{
-                position: 'absolute',
-                top: '30px',
-                right: '0',
-                backgroundColor: '#fff',
-                padding: '10px',
-                width: '250px',
-                borderRadius: '5px',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-              }}
-            >
+            <div className="cart-dropdown">
               {cart.length === 0 ? (
                 <p>El carrito está vacío.</p>
               ) : (
-                <ul style={{ padding: '0', margin: '0' }}>
+                <ul className="cart-list">
                   {cart.map((item) => (
-                    <li key={item._id} style={{ padding: '5px 0', borderBottom: '1px solid #ddd', display: 'flex', alignItems: 'center' }}>
+                    <li key={item._id} className="cart-item">
                       <img
-                        src={item.coverImage || "/placeholder.png"} // Imagen del libro
+                        src={item.coverImage || "/placeholder.png"}
                         alt={item.title}
-                        style={{ width: '40px', height: '60px', objectFit: 'cover', marginRight: '10px' }} // Estilo para la imagen
+                        className="cart-item-image"
                       />
                       <div>
                         <p>{item.title} - ${item.price} x {item.quantity}</p>
                       </div>
+                      {/* Botón de eliminar */}
+                      <button
+                        onClick={() => handleRemoveItem(item._id)}
+                        className="remove-button"
+                      >
+                        Eliminar
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -98,38 +107,32 @@ const Navbar = () => {
               {/* Botón para finalizar la orden */}
               <button
                 onClick={handleFinalizeOrder}
-                style={{
-                  backgroundColor: '#4E342E',
-                  color: '#C5A18C',
-                  padding: '10px',
-                  width: '100%',
-                  border: 'none',
-                  cursor: 'pointer',
-                  marginTop: '10px',
-                }}
+                className="finalize-button"
               >
                 Finalizar Orden
               </button>
             </div>
           )}
-        </li>
+        </div>
+      </div>
 
-        {/* Rutas de usuario */}
+      {/* Título centrado */}
+      <h1 className="navbar-title">BIBLIOLIGHTS</h1>
+
+      {/* Rutas de usuario */}
+      <div className="navbar-right">
         {!user ? (
-          <li>
-            <Link to="/login">Iniciar Sesión</Link>
-          </li>
+          <Link to="/login" className="login-button">Iniciar Sesión</Link>
         ) : (
-          <li>
-            <Link to="/profile">Perfil</Link>
-            <button onClick={logout} style={{ background: 'none', border: 'none', color: '#C5A18C', cursor: 'pointer' }}>
-              Cerrar Sesión
-            </button>
-          </li>
+          <div className="profile-container">
+            <Link to="/profile" className="navbar-link">Perfil</Link>
+            <button onClick={handleLogout} className="logout-button">Cerrar Sesión</button>
+          </div>
         )}
-      </ul>
+      </div>
     </nav>
   );
 };
 
 export default Navbar;
+

@@ -1,0 +1,157 @@
+/* Navbar Styles */
+
+/* Contenedor del Navbar */
+.navbar {
+  background-color: #4E342E; /* Color de fondo del navbar */
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;  /* Alineamos los elementos a la parte inferior */
+  height: 80px;  /* Ajusta la altura para que se vea más compacto */
+  position: relative;  /* Necesitamos esta propiedad para que los elementos dentro de navbar se posicionen correctamente */
+}
+
+/* Contenedor de los elementos a la izquierda */
+.navbar-left {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* Añadimos un pequeño espacio para alinearlo abajo */
+}
+
+/* Contenedor de los enlaces y carrito */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* Añadimos un pequeño espacio para alinearlo abajo */
+}
+
+/* Enlaces del navbar */
+.navbar-link {
+  color: #C5A18C;
+  text-decoration: none;
+  margin-left: 15px;
+  font-size: 1rem;
+}
+
+/* Estilo para el título centrado */
+.navbar-title {
+  color: #C5A18C;
+  font-size: 2.5rem;
+  text-align: center;
+  flex: 2; /* Para que el título se quede centrado */
+  margin-bottom: 10px; /* Espacio debajo del título */
+}
+
+/* Estilo del botón del carrito */
+.cart-button {
+  background: none;
+  border: none;
+  color: #C5A18C;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  position: relative; /* Necesitamos que sea relativo para el dropdown */
+}
+
+/* Estilo para el ícono del carrito */
+.cart-icon {
+  font-size: 20px;
+  margin-right: 5px;
+}
+
+/* Dropdown del carrito */
+.cart-dropdown {
+  position: absolute;
+  top: 100%; /* Lo ajustamos para que el dropdown esté más abajo */
+  left: 0; /* Alineamos el dropdown a la izquierda del botón */
+  background-color: #fff;
+  padding: 10px;
+  width: 250px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Asegura que el dropdown se muestre encima de otros elementos */
+  display: none;  /* Inicialmente oculto */
+}
+
+/* Mostrar el carrito desplegable cuando está abierto */
+.cart-container.open .cart-dropdown {
+  display: block;
+}
+
+/* Estilo para la lista de productos del carrito */
+.cart-list {
+  padding: 0;
+  margin: 0;
+}
+
+.cart-item {
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+}
+
+/* Estilo para la imagen de los productos en el carrito */
+.cart-item-image {
+  width: 40px;
+  height: 60px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+/* Botón para finalizar la orden */
+.finalize-button {
+  background-color: #4E342E;
+  color: #C5A18C;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* Contenedor de las opciones de perfil y logout */
+.profile-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Estilo del botón de logout */
+.logout-button {
+  background: none;
+  border: none;
+  color: #C5A18C;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 15px;
+}
+
+/* Estilos de las opciones cuando no está logueado */
+.login-button {
+  color: #C5A18C;
+  font-size: 1rem;
+  text-decoration: none;
+  margin-left: 15px;
+}
+/* Estilo para el botón de eliminar */
+.remove-button {
+  background-color: #f44336; /* Color rojo */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.remove-button:hover {
+  background-color: #d32f2f; /* Rojo más oscuro al pasar el mouse */
+}
+
+.remove-button:active {
+  background-color: #c62828; /* Rojo aún más oscuro al hacer clic */
+}

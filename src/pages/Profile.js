@@ -329,8 +329,17 @@ const Profile = () => {
             <h3>Libros Existentes</h3>
             <ul>
               {books.map((book) => (
-                <li key={book._id}>
-                  <p>{book.title}</p>
+                <li key={book._id} style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                  <img
+                    src={book.coverImage || '/placeholder.png'}
+                    alt={book.title}
+                    style={{ width: '50px', height: '75px', objectFit: 'cover', marginRight: '10px' }}
+                  />
+                  <div style={{ flex: 1 }}>
+                    <p><strong>{book.title}</strong></p>
+                    <p>Autor: {book.author}</p>
+                    <p>Precio: ${book.price}</p>
+                  </div>
                   <button onClick={() => handleDeleteBook(book._id)}>Eliminar</button>
                   <button onClick={() => handleUpdateBook(book._id)}>Actualizar</button>
                 </li>

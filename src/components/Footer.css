@@ -1,0 +1,116 @@
+.footer {
+    background-color: #4F3737; /* Fondo marrón oscuro */
+    color: #F5E9DA; /* Texto beige */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .footer-top {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Alineación de los elementos en la parte superior */
+    margin-bottom: 20px;
+  }
+  
+  .footer-presentation {
+    width: 30%; /* Cambié el tamaño a 30% para mover la presentación más a la izquierda */
+    color: #F5E9DA;
+    text-align: left; /* Alineación a la izquierda */
+  }
+  
+  .footer-presentation h3 {
+    font-size: 2rem;
+    margin: 0;
+  }
+  
+  .footer-presentation p {
+    font-size: 1.1rem;
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+  
+  .footer-sections {
+    display: flex;
+    justify-content: center; /* Alineación de las secciones al centro */
+    align-items: center;
+    gap: 30px; /* Aumento el espacio entre las secciones */
+    width: 50%; /* Limito el ancho de las secciones para que estén centradas */
+  }
+  
+  .footer-links {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .footer-links h4 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+  }
+  
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-links li {
+    margin: 5px 0;
+  }
+  
+  .footer-link {
+    color: #F5E9DA;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+  }
+  
+  .footer-link:hover {
+    color: #C5A18C;
+  }
+  
+  .footer-social {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .footer-social h4 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .social-icon {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s;
+  }
+  
+  .social-icon:hover {
+    transform: scale(1.1);
+  }
+  
+  .footer-bottom {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 10px;
+    border-top: 1px solid #836F6F;
+  }
+  
+  .footer-bottom p {
+    font-size: 0.9rem;
+  }
+  
+    
