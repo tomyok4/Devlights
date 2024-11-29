@@ -16,20 +16,11 @@ const Profile = () => {
     coverImage: '',
     price: 0,
     deliveryTimes: [],
+    quantity: 0,
   });
+  const [editingBook, setEditingBook] = useState(null);
 
-  // Estado editable para la información del usuario
-  const [editableUser, setEditableUser] = useState({
-    firstName: user.firstName || '',
-    lastName: user.lastName || '',
-    dob: user.dob || '',
-    address: user.address || '',
-    city: user.city || '',
-    country: user.country || '',
-    phoneNumber: user.phoneNumber || '',
-  });
-
-  // Obtener el historial de pedidos
+  // Fetch Orders
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -46,7 +37,7 @@ const Profile = () => {
     fetchOrders();
   }, []);
 
-  // Obtener los libros favoritos del usuario
+  // Fetch Favorites
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
@@ -63,7 +54,7 @@ const Profile = () => {
     fetchFavorites();
   }, []);
 
-  // Obtener todos los libros (solo administradores)
+  // Fetch Books (for admin)
   useEffect(() => {
     if (user && user.isAdmin) {
       const fetchBooks = async () => {
@@ -86,36 +77,19 @@ const Profile = () => {
     setActiveTab(tab);
   };
 
-  // Actualizar la información del usuario
-  const handleSaveUserInfo = async () => {
-    try {
-      const response = await axios.put(
-        'https://bibliolights-backend.onrender.com/api/users/profile',
-        editableUser,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      if (response.status === 200) {
-        alert('Información actualizada con éxito');
-      } else {
-        alert('Hubo un problema al actualizar los datos. Intenta nuevamente.');
-      }
-    } catch (error) {
-      console.error('Error al actualizar la información:', error.message);
-      alert('Hubo un error al actualizar la información. Intenta nuevamente.');
-    }
-  };
-
-  // Agregar un nuevo libro
+  // Add Book
   const handleAddBook = async () => {
     try {
+      const { title, author, description, coverImage, price, deliveryTimes, quantity } = newBook;
+
+      if (!title || !author || !coverImage || price <= 0 || quantity <= 0) {
+        alert('Por favor, completa todos los campos correctamente.');
+        return;
+      }
+
       const response = await axios.post(
         'https://bibliolights-backend.onrender.com/api/admin/books',
-        newBook,
+        { title, author, description, coverImage, price, deliveryTimes, quantity },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -123,14 +97,16 @@ const Profile = () => {
           },
         }
       );
+
       alert('Libro agregado exitosamente');
       setBooks([...books, response.data]);
-      setNewBook({ title: '', author: '', description: '', coverImage: '', price: 0, deliveryTimes: [] });
+      setNewBook({ title: '', author: '', description: '', coverImage: '', price: 0, deliveryTimes: [], quantity: 0 });
     } catch (error) {
       console.error('Error al agregar el libro:', error.message);
     }
   };
 
+  // Delete Book
   const handleDeleteBook = async (bookId) => {
     try {
       await axios.delete(`https://bibliolights-backend.onrender.com/api/admin/books/${bookId}`, {
@@ -144,11 +120,18 @@ const Profile = () => {
     }
   };
 
-  const handleUpdateBook = async (bookId) => {
+  // Update Book
+  const handleUpdateBook = async () => {
     try {
-      const updatedBook = { ...newBook, _id: bookId };
+      const updatedBook = { ...editingBook };
+
+      if (!updatedBook.title || !updatedBook.author || updatedBook.price <= 0 || updatedBook.quantity <= 0) {
+        alert('Por favor, completa todos los campos correctamente.');
+        return;
+      }
+
       const response = await axios.put(
-        `https://bibliolights-backend.onrender.com/api/admin/books/${bookId}`,
+        `https://bibliolights-backend.onrender.com/api/admin/books/${updatedBook._id}`,
         updatedBook,
         {
           headers: {
@@ -157,16 +140,19 @@ const Profile = () => {
           },
         }
       );
+
       alert('Libro actualizado exitosamente');
-      setBooks(books.map((book) => (book._id === bookId ? response.data : book)));
+      setBooks(books.map((book) => (book._id === updatedBook._id ? response.data : book)));
+      setEditingBook(null);
     } catch (error) {
       console.error('Error al actualizar el libro:', error.message);
+      alert('Hubo un error al actualizar el libro. Intenta nuevamente.');
     }
   };
 
   return (
     <div className="profileContainer">
-      <h2>Perfil de {user.firstName}</h2>
+      <h2>Perfil de {user.isAdmin ? 'Devlights' : 'Tomas'}</h2>
 
       <div className="tabs">
         <button
@@ -188,67 +174,43 @@ const Profile = () => {
           Libros Favoritos
         </button>
         {user && user.isAdmin && (
-          <>
-            <button
-              className={`tabButton ${activeTab === 'manageBooks' ? 'activeTab' : ''}`}
-              onClick={() => handleTabChange('manageBooks')}
-            >
-              Gestión de Libros
-            </button>
-          </>
+          <button
+            className={`tabButton ${activeTab === 'manageBooks' ? 'activeTab' : ''}`}
+            onClick={() => handleTabChange('manageBooks')}
+          >
+            Gestión de Libros
+          </button>
         )}
       </div>
 
       <div className="tabContent">
+        {/* Information Tab */}
         {activeTab === 'info' && (
           <div className="infoTab">
             <p><strong>Email:</strong> {user.email}</p>
-            <input
-              type="text"
-              placeholder="Nombre"
-              value={editableUser.firstName}
-              onChange={(e) => setEditableUser({ ...editableUser, firstName: e.target.value })}
-            />
-            <input
-              type="text"
-              placeholder="Apellido"
-              value={editableUser.lastName}
-              onChange={(e) => setEditableUser({ ...editableUser, lastName: e.target.value })}
-            />
-            <input
-              type="date"
-              placeholder="Fecha de Nacimiento"
-              value={editableUser.dob}
-              onChange={(e) => setEditableUser({ ...editableUser, dob: e.target.value })}
-            />
-            <input
-              type="text"
-              placeholder="Dirección"
-              value={editableUser.address}
-              onChange={(e) => setEditableUser({ ...editableUser, address: e.target.value })}
-            />
-            <input
-              type="text"
-              placeholder="Ciudad"
-              value={editableUser.city}
-              onChange={(e) => setEditableUser({ ...editableUser, city: e.target.value })}
-            />
-            <input
-              type="text"
-              placeholder="País"
-              value={editableUser.country}
-              onChange={(e) => setEditableUser({ ...editableUser, country: e.target.value })}
-            />
-            <input
-              type="text"
-              placeholder="Número de Teléfono"
-              value={editableUser.phoneNumber}
-              onChange={(e) => setEditableUser({ ...editableUser, phoneNumber: e.target.value })}
-            />
-            <button onClick={handleSaveUserInfo}>Guardar</button>
+            {user.isAdmin ? (
+              <>
+                <p><strong>Nombre:</strong> Devlights</p>
+                <p><strong>Apellido:</strong> Bootcamp</p>
+                <p><strong>Dirección:</strong> Union 1250 2do Piso</p>
+                <p><strong>Ciudad:</strong> Corrientes</p>
+                <p><strong>País:</strong> Argentina</p>
+                <p><strong>Número de Teléfono:</strong> 3794230003</p>
+              </>
+            ) : (
+              <>
+                <p><strong>Nombre:</strong> Tomas</p>
+                <p><strong>Apellido:</strong> Segura</p>
+                <p><strong>Dirección:</strong> Av Castelli 350</p>
+                <p><strong>Ciudad:</strong> Resistencia</p>
+                <p><strong>País:</strong> Chaco</p>
+                <p><strong>Número de Teléfono:</strong> 3734400174</p>
+              </>
+            )}
           </div>
         )}
 
+        {/* Orders Tab */}
         {activeTab === 'orders' && (
           <div className="ordersTab">
             {orders.length > 0 ? (
@@ -267,13 +229,18 @@ const Profile = () => {
           </div>
         )}
 
+        {/* Favorites Tab */}
         {activeTab === 'favorites' && (
           <div className="favoritesTab">
             {favorites.length > 0 ? (
               <ul>
                 {favorites.map((book) => (
                   <li key={book._id}>
-                    <img src={book.coverImage || '/placeholder.png'} alt={book.title} style={{ width: '50px', height: '75px' }} />
+                    <img 
+                      src={book.coverImage || '/placeholder.png'} 
+                      alt={book.title} 
+                      style={{ width: '50px', height: '75px' }} 
+                    />
                     <h3>{book.title}</h3>
                     <p>Autor: {book.author}</p>
                     <p>Precio: ${book.price}</p>
@@ -286,6 +253,7 @@ const Profile = () => {
           </div>
         )}
 
+        {/* Manage Books Tab */}
         {activeTab === 'manageBooks' && user.isAdmin && (
           <div className="manageBooksTab">
             <h3>Agregar Nuevo Libro</h3>
@@ -319,10 +287,10 @@ const Profile = () => {
               onChange={(e) => setNewBook({ ...newBook, price: e.target.value })}
             />
             <input
-              type="text"
-              placeholder="Tiempos de entrega (separados por coma)"
-              value={newBook.deliveryTimes.join(',')}
-              onChange={(e) => setNewBook({ ...newBook, deliveryTimes: e.target.value.split(',') })}
+              type="number"
+              placeholder="Cantidad"
+              value={newBook.quantity}
+              onChange={(e) => setNewBook({ ...newBook, quantity: e.target.value })}
             />
             <button onClick={handleAddBook}>Agregar Libro</button>
 
@@ -341,13 +309,68 @@ const Profile = () => {
                     <p>Precio: ${book.price}</p>
                   </div>
                   <button onClick={() => handleDeleteBook(book._id)}>Eliminar</button>
-                  <button onClick={() => handleUpdateBook(book._id)}>Actualizar</button>
+                  <button onClick={() => {
+                    setEditingBook(book);
+                    setEditingBook(prevBook => ({
+                      ...prevBook,
+                      title: `Título: ${book.title}`,
+                      author: `Autor: ${book.author}`,
+                      description: `Descripción: ${book.description}`,
+                      coverImage: book.coverImage,
+                      price: book.price,
+                      quantity: book.quantity
+                    }));
+                  }}>Actualizar</button>
                 </li>
               ))}
             </ul>
           </div>
         )}
       </div>
+
+      {/* Update Book Modal */}
+      {editingBook && (
+        <div className="updateBookForm">
+          <h3>Actualizar Libro</h3>
+          <input
+            type="text"
+            placeholder="Título"
+            value={editingBook.title}
+            onChange={(e) => setEditingBook({ ...editingBook, title: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="Autor"
+            value={editingBook.author}
+            onChange={(e) => setEditingBook({ ...editingBook, author: e.target.value })}
+          />
+          <textarea
+            placeholder="Descripción"
+            value={editingBook.description}
+            onChange={(e) => setEditingBook({ ...editingBook, description: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="URL de la imagen"
+            value={editingBook.coverImage}
+            onChange={(e) => setEditingBook({ ...editingBook, coverImage: e.target.value })}
+          />
+          <input
+            type="number"
+            placeholder="Precio"
+            value={editingBook.price}
+            onChange={(e) => setEditingBook({ ...editingBook, price: e.target.value })}
+          />
+          <input
+            type="number"
+            placeholder="Cantidad"
+            value={editingBook.quantity}
+            onChange={(e) => setEditingBook({ ...editingBook, quantity: e.target.value })}
+          />
+          <button onClick={handleUpdateBook}>Guardar Cambios</button>
+          <button onClick={() => setEditingBook(null)}>Cancelar</button>
+        </div>
+      )}
     </div>
   );
 };
